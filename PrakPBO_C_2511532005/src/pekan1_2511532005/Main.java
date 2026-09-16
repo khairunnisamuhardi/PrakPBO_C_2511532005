@@ -19,6 +19,8 @@ public class Main {
 			System.out.println("3. Tarik Tunai");
 			System.out.println("4. Cek Informasi Rekening");
 			System.out.println("5. Ganti/Pilih Akun Aktif");
+			System.out.println("6. Cetak Mutasi(Riwayat)");
+			System.out.println("7. Riwayat Penarikan");
 			System.out.println("0. Keluar");
 			System.out.println("Pilih Menu :");
 			
@@ -114,6 +116,21 @@ public class Main {
                     }
                 }
                 break;
+                
+			case 6:
+				if(akunAktif == null) {
+					System.out.println("Error : Mohon maaf, anda belum memiliki norek!");
+				} else {
+					akunAktif.cetakMutasi();
+				}
+				break;
+			
+			case 7:
+				if(akunAktif == null) {
+					System.out.println("Error : Mohon maaf, anda belum memiliki norek!");
+				}else {
+					akunAktif.riwayatPenarikan();
+				}
                 
 			case 0:
 				isRunning = false;
