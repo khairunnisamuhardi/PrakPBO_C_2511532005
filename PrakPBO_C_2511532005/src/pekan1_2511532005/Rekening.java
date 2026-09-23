@@ -3,24 +3,57 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import Pekan2_2511532005.Transaksi;
-
 public class Rekening {
-	String nomorRekening;
-	String namaPemilik;
-	double saldo;
+	private String nomorRekening;
+	private String namaPemilik;
+	private double saldo;
+	private String pin;
+	private int percobaanSalah = 0;
+	private boolean isTerblokir = false;
 	
-	ArrayList<Transaksi>riwayatTransaksi;
+	private ArrayList<Transaksi> riwayatTransaksi;
 	
-	public Rekening(String nomor, String nama, double saldoAwal) {
+	public Rekening(String nomor, String nama, double saldoAwal, String pinAwal) {
 		this.nomorRekening = nomor;
 		this.namaPemilik = nama;
 		this.saldo = saldoAwal;
 		
+		if (pinAwal.length() == 6) {
+			this.pin = pinAwal;
+		} else {
+			System.out.println("Peringatan: PIN harus 6 digit! menggunakan PIN default 123456");
+			this.pin = "123456";
+		}
 		this.riwayatTransaksi = new ArrayList<>();
+		System.out.println("Rekening atas nama " + namaPemilik + " berhasil dibuat.");
 		
 		NumberFormat rupiah = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
 		System.out.println("Rekening atas nama" + namaPemilik + " berhasil dibuat dengan saldo Rp" + saldo);
+	}
+	
+	public String getNomorRekening() { return nomorRekening;}
+	public String getNamaPemilik() { return namaPemilik; }
+	
+	public boolean isTerblokir() {return isTerblokir;}
+	
+	public boolean otentikasi(String inputPin) {
+		if (isTerblokir) {
+            System.out.println("Akun Anda terblokir! Tidak dapat melakukan transaksi.");
+            return false;
+        }
+		if (this.pin.equals(inputPin)) {
+            percobaanSalah = 0; // Reset counter jika benar
+            return true;
+        } else {
+            percobaanSalah++;
+            System.out.println("PIN salah! Kesempatan tersisa: " + (3 - percobaanSalah));
+            
+            // Jika sudah 3 kali salah, blokir akun
+            if (percobaanSalah >= 3) {
+                isTerblokir = true;
+                System.out.println("Akun Anda terblokir karena salah memasukkan PIN 3 kali!");
+            }
+        } return false;
 	}
 	
 	public void setorTunai(double nominal) {
