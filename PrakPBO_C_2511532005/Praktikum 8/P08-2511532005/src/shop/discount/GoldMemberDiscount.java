@@ -1,0 +1,15 @@
+package shop.discount;
+
+/** Member GOLD: potongan sesuai persentase dari parameter NIM. */
+public class GoldMemberDiscount implements DiscountStrategy {
+    private final int percent;
+
+    public GoldMemberDiscount(int percent) {
+        this.percent = percent;
+    }
+
+    @Override
+    public long discountFor(long subtotal) {
+        return subtotal * percent / 100;
+    }
+}
